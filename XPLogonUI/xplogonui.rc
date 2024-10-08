@@ -1,0 +1,108 @@
+#include <windows.h>
+#include "resource.h"
+
+/* Icons */
+IDI_STLOGOFF  ICON  "res/logoff.ico"
+IDI_SHUTDOWN  ICON  "res/exit.ico"
+
+/* Banner bitmaps */
+
+// Windows 2000
+IDB_BANNER_2000           BITMAP  "../shared/res/banner_2000.bmp"
+IDB_BANNER_2000_LARGE     BITMAP  "../shared/res/banner_2000_large.bmp"
+IDB_BAR_2000              BITMAP  "../shared/res/bar_2000.bmp"
+
+// Windows XP
+IDB_BANNER_XP_X64         BITMAP  "../shared/res/banner_xp_x64.bmp"
+IDB_BANNER_XP_X64_LARGE   BITMAP  "../shared/res/banner_xp_x64_large.bmp"
+IDB_BANNER_XP_PRO         BITMAP  "../shared/res/banner_xp_pro.bmp"
+IDB_BANNER_XP_PRO_LARGE   BITMAP  "../shared/res/banner_xp_pro_large.bmp"
+IDB_BANNER_XP_HOME        BITMAP  "../shared/res/banner_xp_home.bmp"
+IDB_BANNER_XP_HOME_LARGE  BITMAP  "../shared/res/banner_xp_home_large.bmp"
+IDB_BAR_XP                BITMAP  "../shared/res/bar_xp.bmp"
+
+/* Dialogs */
+
+// Security options (CTRL+ALT+DEL)
+IDD_OPTIONS_DIALOG DIALOGEX DISCARDABLE  6, 18, 274, 119
+STYLE DS_MODALFRAME | DS_SHELLFONT | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "Windows Security"
+FONT 8, "MS Shell Dlg"
+{
+	DEFPUSHBUTTON   "Loc&k Computer", IDD_OPTIONS_LOCK, 7, 80, 84, 14
+	PUSHBUTTON      "&Log Off...", IDD_OPTIONS_LOGOFF, 95, 80, 84, 14
+	PUSHBUTTON      "&Shut Down...", IDD_OPTIONS_SHUTDOWN, 183, 80, 84, 14
+	PUSHBUTTON      "&Change Password...", IDD_OPTIONS_CHANGEPWD, 7, 98, 84, 14
+	PUSHBUTTON      "&Task Manager", IDD_OPTIONS_TASKLIST, 95, 98, 84, 14
+	PUSHBUTTON      "Cancel", IDCANCEL, 183, 98, 84, 14
+	LTEXT           "Use the Task Manager to close an application that is not responding.",
+	IDD_OPTIONS_TASKMGR_TEXT, 7, 65, 260, 8
+	GROUPBOX        "Logon Information", 1657, 7, 7, 260, 52
+	LTEXT           "Logon Name", IDD_OPTIONS_LOGON_NAME_INFO, 15, 19, 246, 18
+	LTEXT           "Logon Date:", 1659, 15, 40, 54, 8
+	LTEXT           "Date", IDD_OPTIONS_LOGON_DATE, 70, 40, 190, 8
+}
+
+// Log off dialog
+IDD_LOGOFFWINDOWS_DIALOG DIALOGEX 0, 0, 188, 60
+STYLE DS_MODALFRAME | DS_SHELLFONT | DS_CENTER | WS_POPUP | WS_CAPTION |
+WS_SYSMENU
+CAPTION "Log Off Windows"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+{
+	ICON            21, IDD_LOGOFFICON, 7, 7, 21, 20
+	LTEXT           "Are you sure you want to log off?", -1, 35, 16, 146, 8
+	DEFPUSHBUTTON   "&Yes", IDOK, 41, 39, 50, 14
+	PUSHBUTTON      "&No", IDCANCEL, 95, 39, 50, 14
+}
+
+// Shut down dialog
+IDD_EXITWINDOWS_DIALOG DIALOGEX 0, 0, 274, 103
+STYLE DS_MODALFRAME | DS_SHELLFONT | DS_CENTER | WS_POPUP | WS_CAPTION
+CAPTION "Shut Down Windows"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+{
+	ICON            22, -1, 13, 7, 20, 20, WS_GROUP
+	LTEXT           "&What do you want the computer to do?", -1, 44, 6,
+	173, 10
+	COMBOBOX        IDC_EXITOPTIONS_COMBO, 44, 20, 180, 57, CBS_DROPDOWNLIST |
+	WS_VSCROLL | WS_TABSTOP
+	LTEXT           "", IDC_EXITOPTIONS_DESCRIPTION, 44, 40, 180, 30
+	DEFPUSHBUTTON   "OK", IDOK, 158, 82, 50, 14, WS_GROUP
+	PUSHBUTTON      "Cancel", IDCANCEL, 212, 82, 50, 14
+}
+
+/* Strings */
+STRINGTABLE
+{
+	// Security options (CTRL+ALT+DEL)
+	IDS_LOGON_NAME_NFN_INFO  "You are logged on as %s\\%s."
+
+	// Shut down dialog
+	IDS_SHUTDOWN_NAME        "Shut down"
+	IDS_SHUTDOWN_DESC        "Ends your session and shuts down Windows so that you can safely turn off power."
+	IDS_RESTART_NAME         "Restart"
+	IDS_RESTART_DESC         "Ends your session, shuts down Windows, and starts Windows again."
+	IDS_SLEEP_NAME           "Stand by"
+	IDS_SLEEP_DESC           "Maintains your session, keeping the computer running on low power with data still in memory."
+}
+
+/* Version info */
+1 VERSIONINFO
+FILEVERSION 0, 1, 0
+PRODUCTVERSION 1, 0, 7
+{
+	BLOCK "StringFileInfo"
+	{
+		BLOCK "040904B0"
+		{
+			VALUE "CompanyName", "aubymori"
+			VALUE "FileDescription", "ConsoleLogonHook Windows XP UI DLL"
+			VALUE "FileVersion", "0.1.0"
+			VALUE "InternalName", "XPLogonUI"
+			VALUE "OriginalFilename", "ConsoleLogonUI.DLL"
+			VALUE "ProductName", "ConsoleLogonHook"
+			VALUE "ProductVersion", "1.0.7"
+		}
+	}
+}
