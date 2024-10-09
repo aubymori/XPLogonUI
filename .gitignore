@@ -1,2 +1,5 @@
 .vs/**
 build/**
+x64/**
+Release/**
+Debug/**
