@@ -36,5 +36,5 @@ public:
 	void LoadBranding();
 	void GetSize(bool fLarge, SIZE *pSize);
 	void SizeForBranding(HWND hWnd, bool fLarge);
-	void PaintBranding(HDC hDC, bool fLarge, int barOffset = 0);
+	void PaintBranding(HDC hDC, bool fLarge, int barOffset = 0, int x = 0, int y = 0);
 };

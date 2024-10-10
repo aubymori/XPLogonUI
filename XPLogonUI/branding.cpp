@@ -117,9 +117,9 @@ void CBranding::SizeForBranding(HWND hWnd, bool fLarge)
 	s_MoveChildren(hWnd, 0, sizeBrand.cy);
 }
 
-void CBranding::PaintBranding(HDC hDC, bool fLarge, int barOffset /* = 0*/)
+void CBranding::PaintBranding(HDC hDC, bool fLarge, int barOffset /* = 0 */, int x /* = 0 */, int y /* = 0 */)
 {
-	int x = 0, y = 0;
+	int bannerX = 0, bannerY = 0;
 	SIZE sizeBrand;
 	HBITMAP hbmBanner = fLarge ? _hbmBannerLarge : _hbmBanner;
 	BITMAP bmBanner, bmBar;
@@ -131,11 +131,14 @@ void CBranding::PaintBranding(HDC hDC, bool fLarge, int barOffset /* = 0*/)
 	
 	SelectObject(hMemDC, hbmBanner);
 	if (bmBanner.bmWidth < sizeBrand.cx)
-		x = (sizeBrand.cx / 2) - (bmBanner.bmWidth / 2);
+		bannerX = (sizeBrand.cx / 2) - (bmBanner.bmWidth / 2);
+
+	bannerX += x;
+	bannerY += y;
 
 	BitBlt(
 		hDC,
-		x, y,
+		bannerX, bannerY,
 		bmBanner.bmWidth,
 		bmBanner.bmHeight,
 		hMemDC,
@@ -146,7 +149,7 @@ void CBranding::PaintBranding(HDC hDC, bool fLarge, int barOffset /* = 0*/)
 	SelectObject(hMemDC, _hbmBar);
 	BitBlt(
 		hDC,
-		barOffset, bmBanner.bmHeight,
+		barOffset + x, bmBanner.bmHeight + y,
 		bmBar.bmWidth - barOffset,
 		bmBar.bmHeight,
 		hMemDC,
@@ -156,7 +159,7 @@ void CBranding::PaintBranding(HDC hDC, bool fLarge, int barOffset /* = 0*/)
 	if (barOffset != 0)
 		BitBlt(
 			hDC,
-			0, bmBanner.bmHeight,
+			x, bmBanner.bmHeight + y,
 			barOffset,
 			bmBar.bmHeight,
 			hMemDC,
