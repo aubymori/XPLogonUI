@@ -4,9 +4,9 @@
 /**
   * Gets information about the logged on user.
   *
-  * lpUsername - Buffer to receive the username.
+  * lpUsername - Buffer to receive the username. This can be NULL if you want domain only.
   * cchUsernameMax - Size of lpUsername buffer.
-  * lpDomain - Buffer to receive the domain.
+  * lpDomain - Buffer to receive the domain. This can be NULL if you want username only.
   * cchDomainMax - Size of lpDomain buffer.
   *
   * Return value - The session ID if successful, -1 on failure.

@@ -56,7 +56,7 @@ INT_PTR CALLBACK CSecurityView::v_DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
 				}
 				case IDD_OPTIONS_SHUTDOWN:
 				{
-					CShutDownDialog shutDownDlg;
+					CShutDownDialog shutDownDlg(_logOffControl);
 					shutDownDlg.Show(hWnd);
 					return TRUE;
 				}

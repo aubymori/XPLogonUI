@@ -5,7 +5,9 @@
 
 DWORD GetLoggedOnUserInfo(LPWSTR lpUsername, UINT cchUsernameMax, LPWSTR lpDomain, UINT cchDomainMax)
 {
-	if (!lpUsername || !cchUsernameMax || !lpDomain || !cchDomainMax)
+	if ((!lpUsername && !lpDomain)
+	|| (lpUsername && !cchUsernameMax)
+	|| (lpDomain && !cchDomainMax))
 		return -1;
 
 	DWORD sessionId = 0;
@@ -21,26 +23,32 @@ DWORD GetLoggedOnUserInfo(LPWSTR lpUsername, UINT cchUsernameMax, LPWSTR lpDomai
 			WTS_SESSION_INFOW *session = &sessions[i];
 			sessionId = session->SessionId;
 
-			LPWSTR pszUsername = nullptr;
 			DWORD bytesReturned = 0;
-			if (!WTSQuerySessionInformationW(WTS_CURRENT_SERVER_HANDLE, sessionId, WTSUserName, &pszUsername, &bytesReturned))
+			if (lpUsername)
 			{
-				WTSFreeMemory(sessions);
-				return -1;
+				LPWSTR pszUsername = nullptr;
+				if (!WTSQuerySessionInformationW(WTS_CURRENT_SERVER_HANDLE, sessionId, WTSUserName, &pszUsername, &bytesReturned))
+				{
+					WTSFreeMemory(sessions);
+					return -1;
+				}
+
+				wcscpy_s(lpUsername, cchUsernameMax, pszUsername);
+				WTSFreeMemory(pszUsername);
 			}
 
-			wcscpy_s(lpUsername, cchUsernameMax, pszUsername);
-			WTSFreeMemory(pszUsername);
-
-			LPWSTR pszDomain = nullptr;
-			if (!WTSQuerySessionInformationW(WTS_CURRENT_SERVER_HANDLE, sessionId, WTSDomainName, &pszDomain, &bytesReturned))
+			if (lpDomain)
 			{
-				WTSFreeMemory(sessions);
-				return -1;
-			}
+				LPWSTR pszDomain = nullptr;
+				if (!WTSQuerySessionInformationW(WTS_CURRENT_SERVER_HANDLE, sessionId, WTSDomainName, &pszDomain, &bytesReturned))
+				{
+					WTSFreeMemory(sessions);
+					return -1;
+				}
 
-			wcscpy_s(lpDomain, cchDomainMax, pszDomain);
-			WTSFreeMemory(pszDomain);
+				wcscpy_s(lpDomain, cchDomainMax, pszDomain);
+				WTSFreeMemory(pszDomain);
+			}
 		}
 	}
 

@@ -54,3 +54,5 @@
 #define IDS_RESTART_DESC                8003
 #define IDS_SLEEP_NAME                  8004
 #define IDS_SLEEP_DESC                  8005
+#define IDS_LOGOFF_NAME                 8010
+#define IDS_LOGOFF_DESC                 8011

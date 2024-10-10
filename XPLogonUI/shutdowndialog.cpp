@@ -3,6 +3,8 @@
 #include "xplogonui.h"
 #include <powrprof.h>
 #include <windowsx.h>
+#include "ConsoleLogonHook.h"
+#include "util.h"
 
 INT_PTR CALLBACK CShutDownDialog::v_DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -16,13 +18,25 @@ INT_PTR CALLBACK CShutDownDialog::v_DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam,
             // Init combobox
             _hwndCombobox = GetDlgItem(hWnd, IDC_EXITOPTIONS_COMBO);
             WCHAR szBuffer[256];
+
+            // Log off text is unique in that it containes current username.
+            if (_logOffControl)
+            {
+                WCHAR szFormat[256], szUserName[256] = { 0 };
+                LoadStringW(g_hInstDLL, IDS_LOGOFF_NAME, szFormat, 256);
+                GetLoggedOnUserInfo(szUserName, 256, nullptr, 0);
+                swprintf_s(szBuffer, szFormat, szUserName);
+                ComboBox_AddString(_hwndCombobox, szBuffer);
+            }
+
             LoadStringW(g_hInstDLL, IDS_SHUTDOWN_NAME, szBuffer, 256);
             ComboBox_AddString(_hwndCombobox, szBuffer);
             LoadStringW(g_hInstDLL, IDS_RESTART_NAME, szBuffer, 256);
             ComboBox_AddString(_hwndCombobox, szBuffer);
             LoadStringW(g_hInstDLL, IDS_SLEEP_NAME, szBuffer, 256);
             ComboBox_AddString(_hwndCombobox, szBuffer);
-            ComboBox_SetCurSel(_hwndCombobox, 0);
+            // Select "Shut down" item
+            ComboBox_SetCurSel(_hwndCombobox, (_logOffControl != nullptr));
             _OnComboboxSelect();
 
             return TRUE;
@@ -57,9 +71,16 @@ INT_PTR CALLBACK CShutDownDialog::v_DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 void CShutDownDialog::_OnComboboxSelect()
 {
     int index = ComboBox_GetCurSel(_hwndCombobox);
+    // Log off item is above shutdown, increase index to account for it not
+    // existing
+    if (!_logOffControl)
+        index++;
     UINT uID = 0;
     switch (index)
     {
+        case SHTDN_LOGOFF:
+            uID = IDS_LOGOFF_DESC;
+            break;
         case SHTDN_SHUTDOWN:
             uID = IDS_SHUTDOWN_DESC;
             break;
@@ -80,6 +101,16 @@ void CShutDownDialog::_Shutdown(DWORD dwShutdown)
 {
 	switch (dwShutdown)
 	{
+        case SHTDN_LOGOFF:
+            if (_logOffControl)
+            {
+                int dummy;
+                KEY_EVENT_RECORD ker = { 0 };
+                ker.bKeyDown = TRUE;
+                ker.wVirtualKeyCode = VK_RETURN;
+                SecurityOptionControl_Press(_logOffControl, &ker, &dummy);
+            }
+            break;
         case SHTDN_SHUTDOWN:
             InitiateSystemShutdownW(
                 NULL,
@@ -98,9 +129,10 @@ void CShutDownDialog::_Shutdown(DWORD dwShutdown)
 	}
 }
 
-CShutDownDialog::CShutDownDialog()
+CShutDownDialog::CShutDownDialog(void *logOffControl)
 	: CDialog(IDD_EXITWINDOWS_DIALOG)
     , _hwndCombobox(NULL)
+    , _logOffControl(logOffControl)
 {
     /* Apply the needed privilege for shutting down */
     HANDLE hToken;

@@ -85,6 +85,8 @@ STRINGTABLE
 	IDS_RESTART_DESC         "Ends your session, shuts down Windows, and starts Windows again."
 	IDS_SLEEP_NAME           "Stand by"
 	IDS_SLEEP_DESC           "Maintains your session, keeping the computer running on low power with data still in memory."
+	IDS_LOGOFF_NAME          "Log off %s"
+	IDS_LOGOFF_DESC          "Ends your session, leaving the computer running on full power."
 }
 
 /* Version info */
