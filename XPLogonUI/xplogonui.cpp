@@ -12,6 +12,7 @@ CCLHView *g_pActiveView = nullptr;
 
 // Views
 CSecurityView g_securityView;
+CStatusView   g_statusView;
 
 static HANDLE s_hWallHostProcess = NULL;
 

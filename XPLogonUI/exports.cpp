@@ -77,12 +77,12 @@ EXPORT void EditControl_Destroy(void *actualInstance)
 
 EXPORT void StatusView_SetActive(const wchar_t *text)
 {
-
+	g_statusView.SetActive(text);
 }
 
 EXPORT void MessageOrStatusView_Destroy(void)
 {
-
+	//g_statusView.SetInactive();
 }
 
 

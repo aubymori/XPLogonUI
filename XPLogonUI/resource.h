@@ -56,3 +56,7 @@
 #define IDS_SLEEP_DESC                  8005
 #define IDS_LOGOFF_NAME                 8010
 #define IDS_LOGOFF_DESC                 8011
+
+// Status/loading dialog
+#define IDD_STATUS_MESSAGE_DIALOG       2450
+#define IDC_STATUS_MESSAGE_TEXT         2451

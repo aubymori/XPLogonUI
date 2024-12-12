@@ -165,6 +165,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="securityview.h" />
     <ClInclude Include="shutdowndialog.h" />
+    <ClInclude Include="statusview.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="winsta.h" />
     <ClInclude Include="xplogonui.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="logoffdialog.cpp" />
     <ClCompile Include="securityview.cpp" />
     <ClCompile Include="shutdowndialog.cpp" />
+    <ClCompile Include="statusview.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="xplogonui.cpp" />
   </ItemGroup>
